@@ -1,6 +1,7 @@
 ﻿using CQRSAndMediatrWithFluentValidationSampleApplication.Product.Pipeline;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 
 namespace CQRSAndMediatrWithFluentValidationSampleApplication.Product
 {
@@ -8,7 +9,7 @@ namespace CQRSAndMediatrWithFluentValidationSampleApplication.Product
     {
         public static IServiceCollection AddProductModule(this IServiceCollection serviceCollection)
         {
-            serviceCollection.AddMediatR(typeof(ProductModule).Assembly);
+            serviceCollection.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
             serviceCollection.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehaviour<,>));
             serviceCollection.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
 
